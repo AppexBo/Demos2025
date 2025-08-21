@@ -1,0 +1,16 @@
+<odoo>
+    <record id="view_pos_order_form_custom" model="ir.ui.view">
+        <field name="name">pos.order.form.update.ref</field>
+        <field name="model">pos.order</field>
+        <field name="inherit_id" ref="point_of_sale.view_pos_pos_form"/>
+        <field name="arch" type="xml">
+            <header >
+                <button name="actualizar_nombres_ordenes_antiguas"
+                        type="object"
+                        string="Actualizar Ref Antiguas"
+                        class="oe_highlight"
+                        />
+            </header>
+        </field>
+    </record>
+</odoo>
