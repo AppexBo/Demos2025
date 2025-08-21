@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="res_config_settings_view_form_inherit_account_analytic_account_in_pdv" model="ir.ui.view">
+        <field name="name">res.config.settings.view.form.inherit</field>
+        <field name="model">res.config.settings</field>
+        <field name="inherit_id" ref="point_of_sale.res_config_settings_view_form"/>
+        <field name="arch" type="xml">
+            <block id="pos_accounting_section" position="inside">
+                <setting 
+                    id="account_analytic_pdv" 
+                    title="Seccion de seleccion de cuentas analiticas para el punto de venta" 
+                    string="Cuentas Analiticas para el PDV" 
+                    help="Sirve para hacer que cuando se genere una venta se indique a que cuenta analitica ira la venta">
+                    
+                    <field name="pos_analytic_account_ids" 
+                        widget="many2many_tags" 
+                        options="{'no_create': True, 'no_create_edit': True}"
+                        class="oe_inline"/>
+                </setting>
+            </block>
+        </field>
+    </record>
+</odoo>
