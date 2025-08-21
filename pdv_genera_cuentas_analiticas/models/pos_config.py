@@ -9,5 +9,6 @@ class PosConfig(models.Model):
     pos_analytic_account_ids = fields.Many2many(
         'account.analytic.account', 
         string='Cuentas analíticas', 
+        domain="[('company_id', '=', company_id)]",
         copy=False
     )
