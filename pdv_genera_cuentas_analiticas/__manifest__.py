@@ -18,6 +18,6 @@
 	"license": "LGPL-3",
 	"data": [
         #'views/pos_order_line_form.xml'
-		'views/res_config_settings_pdv/settings.xml'
+		#'views/res_config_settings_pdv/settings.xml'
 	],
 }
