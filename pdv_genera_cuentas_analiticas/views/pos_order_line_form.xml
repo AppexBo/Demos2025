@@ -1,0 +1,19 @@
+<!-- views/sale_order_views.xml -->
+<odoo>
+    <data>
+        <!-- Extender la vista de formulario de sale.order -->
+        <record id="view_pos_order_form_analytic_distribution" model="ir.ui.view">
+            <field name="name">pos.order.form.analytic.distribution</field>
+            <field name="model">pos.order</field>
+            <field name="inherit_id" ref="point_of_sale.view_pos_pos_form"/>
+            <field name="arch" type="xml">
+                <!-- Agregar campo analytic_distribution en el formulario -->
+                <xpath expr="//field[@name='lines']/tree/field[@name='full_product_name']" position="after">
+                    <field name="analytic_distribution" widget="analytic_distribution"
+                        groups="analytic.group_analytic_accounting"
+                    />
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>
