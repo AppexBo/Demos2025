@@ -42,5 +42,7 @@ class AccountMove(models.Model):
         if pos_order:
             pos_session = pos_order.session_id
                 if pos_session: 
-                    analytic_account_ids = pos_config.analytic_account_ids
+                    pos_config = pos_session.config_id
+                    if pos_config:
+                        analytic_account_ids = pos_config.analytic_account_ids
         return analytic_account_ids
