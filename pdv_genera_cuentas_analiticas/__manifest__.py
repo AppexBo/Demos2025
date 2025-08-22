@@ -9,15 +9,14 @@
 		'analytic',
 	],
 	"author": "AppexBo",
-	'summary': 'Cuando se genere una venta o devolucion de algun producto en el punto de venta este se asignara y generara su cuenta analitica correspondiente de entrada o salida segun la sucursal',
-	"description": "Cuando se genere una venta o devolucion de algun producto en el punto de venta este se asignara y generara su cuenta analitica correspondiente de entrada o salida segun la sucursal",
+	'summary': 'Cuando se genere la factura se le asigna la cuenta analitica que esta en la configuracion que tien el punto de venta',
+	"description": "Cuando se genere la factura se le asigna la cuenta analitica que esta en la configuracion que tien el punto de venta",
 	"website" : "https://www.appexbo.com/",
 	"auto_install": False,
 	"installable": True,
 	'application': True,
 	"license": "LGPL-3",
 	"data": [
-        #'views/pos_order_line_form.xml'
 		'views/res_config_settings_pdv/settings.xml'
 	],
 }

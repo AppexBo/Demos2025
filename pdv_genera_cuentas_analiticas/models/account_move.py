@@ -40,14 +40,14 @@ class AccountMove(models.Model):
         analytic_account_ids = None
         # Buscar el pos.order donde el name sea igual al move_ref
         pos_order = self.env['pos.order'].search([('name', '=', move.ref)], limit=1)
-        _logger.info("pos_orders aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa %s", pos_order)
+        #_logger.info("pos_orders aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa %s", pos_order)
         if pos_order:
             pos_session = pos_order.session_id
-            _logger.info("pos_session aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa %s", pos_session)
+            #_logger.info("pos_session aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa %s", pos_session)
             if pos_session: 
                 pos_config = pos_session.config_id
-                _logger.info("pos_config aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa %s", pos_config)
+                #_logger.info("pos_config aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa %s", pos_config)
                 if pos_config:
                     analytic_account_ids = pos_config.analytic_account_ids
-                    _logger.info("analytic_account_ids aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa %s", analytic_account_ids)
+                    #_logger.info("analytic_account_ids aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa %s", analytic_account_ids)
         return analytic_account_ids
