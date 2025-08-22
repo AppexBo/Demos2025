@@ -16,23 +16,22 @@ class AccountMove(models.Model):
 
     def _asignar_distribucion_analitica(self, move):
         try:
+            #obtenemos todas las cuentas analiticas de la sucursal
             analytic_account_ids = self._get_analytic_account_ids(move)
             if analytic_account_ids:
-                # Buscar la primera cuenta analítica disponible
-                analytic_account = self.env['account.analytic.account'].search([], limit=1)
-                
-                if analytic_account:
-                    # Preparar la distribución analítica (100% para la cuenta encontrada)
-                    analytic_distribution = {str(analytic_account.id): 100.0}
-                    
-                    # Recorrer todas las líneas del movimiento y asignar la distribución analítica
-                    for line in move.line_ids:
-                        line.write({
-                            'analytic_distribution': analytic_distribution
-                        })
-                    #_logger.info("Distribución analítica asignada al move %s: %s", move.name, analytic_distribution)
-                else:
-                    _logger.warning("No se encontraron cuentas analíticas para asignar al move %s", move.name)
+                #recorremos el listado de cuentas para asignarlas
+                for analytic_account in analytic_account_ids
+                    if analytic_account:
+                        # Preparar la distribución analítica (100% para la cuenta encontrada)
+                        analytic_distribution = {str(analytic_account.id): 100.0}
+                        # Recorrer todas las líneas del movimiento y asignar la distribución analítica
+                        for line in move.line_ids:
+                            line.write({
+                                'analytic_distribution': analytic_distribution
+                            })
+                        #_logger.info("Distribución analítica asignada al move %s: %s", move.name, analytic_distribution)
+                    else:
+                        _logger.warning("No se encontraron cuentas analíticas para asignar al move %s", move.name)
         except Exception as e:
             _logger.error("Error al asignar distribución analítica al move %s: %s", move.name, str(e))
     

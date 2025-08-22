@@ -10,7 +10,7 @@
                     id="account_analytic_pdv" 
                     title="Seccion de seleccion de cuentas analiticas para el punto de venta" 
                     string="Cuentas Analiticas para el PDV" 
-                    help="Sirve para hacer que cuando se genere una venta se indique a que cuenta analitica ira la venta">
+                    help="Sirve para hacer que cuando se genere una venta se indique a que cuenta analitica ira la venta (POR AHORA SOLO COLOCAR UNA)">
                     
                     <field name="pos_analytic_account_ids" 
                         widget="many2many_tags" 
