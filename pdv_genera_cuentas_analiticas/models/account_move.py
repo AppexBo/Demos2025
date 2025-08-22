@@ -20,7 +20,7 @@ class AccountMove(models.Model):
             analytic_account_ids = self._get_analytic_account_ids(move)
             if analytic_account_ids:
                 #recorremos el listado de cuentas para asignarlas
-                for analytic_account in analytic_account_ids
+                for analytic_account in analytic_account_ids:
                     if analytic_account:
                         # Preparar la distribución analítica (100% para la cuenta encontrada)
                         analytic_distribution = {str(analytic_account.id): 100.0}
