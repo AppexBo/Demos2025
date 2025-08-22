@@ -18,7 +18,7 @@ class AccountMove(models.Model):
         try:
             #obtenemos todas las cuentas analiticas de la sucursal
             analytic_account_ids = self._get_analytic_account_ids(move)
-            _logger.info("lineas de cuentas analiticas %s", analytic_account_ids)
+            #_logger.info("lineas de cuentas analiticas %s", analytic_account_ids)
             if analytic_account_ids:
                 #recorremos el listado de cuentas para asignarlas
                 for analytic_account in analytic_account_ids:
