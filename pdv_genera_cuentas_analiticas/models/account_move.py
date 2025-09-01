@@ -21,12 +21,12 @@ class AccountMove(models.Model):
             if analytic_account_ids:
                 #recorremos el listado de cuentas para asignarlas
                 for analytic_account in analytic_account_ids:
-                    _logger.info("data %s", analytic_account.read())
                     if analytic_account:
                         # Preparar la distribución analítica (100% para la cuenta encontrada)
                         analytic_distribution = {str(analytic_account.id): 100.0}
                         # Recorrer todas las líneas del movimiento y asignar la distribución analítica
                         for line in move.line_ids:
+                            _logger.info("data %s", line.read())
                             if line.account_id.code in ["4.1.01.01.002"]:
                                 line.write({
                                     'analytic_distribution': analytic_distribution
