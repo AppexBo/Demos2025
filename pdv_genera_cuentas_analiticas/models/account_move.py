@@ -8,7 +8,6 @@ class AccountMove(models.Model):
     
     @api.model
     def create(self, vals):
-        vals_copy = vals.copy()
         move = super(AccountMove, self).create(vals)
         if vals.get('invoice_origin') and vals.get('move_type') == 'out_invoice':
             self._asignar_distribucion_analitica(move)
@@ -27,9 +26,10 @@ class AccountMove(models.Model):
                         analytic_distribution = {str(analytic_account.id): 100.0}
                         # Recorrer todas las líneas del movimiento y asignar la distribución analítica
                         for line in move.line_ids:
-                            line.write({
-                                'analytic_distribution': analytic_distribution
-                            })
+                            if not(line.account_id.code in ["1.1.02.01.003", "1.1.02.01.001"]):
+                                line.write({
+                                    'analytic_distribution': analytic_distribution
+                                })
                         #_logger.info("Distribución analítica asignada al move %s: %s", move.name, analytic_distribution)
                     else:
                         _logger.warning("No se encontraron cuentas analíticas para asignar al move %s", move.name)
