@@ -26,7 +26,7 @@ class AccountMove(models.Model):
                         analytic_distribution = {str(analytic_account.id): 100.0}
                         # Recorrer todas las líneas del movimiento y asignar la distribución analítica
                         for line in move.line_ids:
-                            if not(line.account_id.code in ["1.1.02.01.003", "1.1.02.01.001"]):
+                            if line.account_id.code in ["4.1.01.01.002"]:
                                 line.write({
                                     'analytic_distribution': analytic_distribution
                                 })
