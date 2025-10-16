@@ -85,6 +85,11 @@
         'views/l10n_bo_package.xml',
         'views/l10n_bo_cafc.xml',
         
+        # WIZARD
+        'wizard/wizard_cancellation_invoice.xml',
+        #Numero de factura
+        'views/account_move_tree_invoice_number.xml',
+        
         'views/menu.xml',
         ],
     'installable': True,
@@ -94,6 +99,6 @@
     'assets': {},
     'license': 'OPL-1',
     'website': 'https://www.appexbo.com/',
-    'maintainer': 'Luis Fernando Hinojosa Flores',
-    'contributors': ['Luis Fernando Hinojosa Flores <hinojosafloresluisfernando@gmail.com>']
+    'maintainer': 'AppexBolivia',
+    'contributors': ['Erick Mercado, Alvaro Andres Justiniano, Yamil Torrico']
 }

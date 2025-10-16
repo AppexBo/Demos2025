@@ -10,8 +10,34 @@ _logger = logging.getLogger(__name__)
 class PosOrder(models.Model):
     _inherit = ['pos.order']
 
+    
+    edi_state = fields.Char(
+        string='Estado EDI',
+        related='account_move.edi_state',
+        readonly=True,
+        store=True
+    )
+    
+    codigoEstado = fields.Integer(
+        string='codigoEstado',
+        related='account_move.codigoEstado',
+        readonly=True,
+        store=True
+    )
+
+    def _export_for_ui(self, order):
+        res = super(PosOrder, self)._export_for_ui(order)
+        res['codigoEstado'] = order.codigoEstado
+        res['edi_state'] = order.edi_state
+        return res
+    
+
     def get_payment_type_default(self):
         pos_payment_ids = self.payment_ids.filtered(lambda line: line.payment_method_id.payment_type_id != False)
+        #pos_payment_ids = self.payment_ids.filtered(
+        #    lambda line: line.payment_method_id.payment_type_id and not getattr(
+        #        line, 'is_change', False) and line.amount > 0
+        #)
         _payment_type_ids = False
         _descripcion = False
         if pos_payment_ids:
@@ -67,3 +93,15 @@ class PosOrder(models.Model):
     def add_payment(self, data):
         res = super(PosOrder, self).add_payment(data)
         return res
+    
+
+    def action_l10n_bo_cancel_invoice(self):
+        REAZON_ID = self.env.context.get('cancel_reason_id')
+        ID = self.env.context.get('move_id')
+        
+        invoice_id = self.env['account.move'].browse(ID)
+        _logger.info(f'Factura: {invoice_id}')
+        if invoice_id and REAZON_ID:
+            _logger.info('Anulando')
+            cancellation_wizard_id = self.env['cancellation.reason'].create({'account_move_id' : invoice_id.id, 'purchase_sale_reason_id' : int(REAZON_ID)})
+            cancellation_wizard_id.cancellation()

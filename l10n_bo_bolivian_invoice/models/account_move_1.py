@@ -119,7 +119,8 @@ class AccountMove1(models.Model):
             #raise UserError(f"{edi_tree_signed}")
         else:
             edi_tree_signed = edi_str.encode('utf-8')
-        _name_file = f'{self.company_id.getNit()}-{self.name}'
+        safe_name = self.name.replace('/', '_')
+        _name_file = f'{self.company_id.getNit()}-{safe_name}.xml'
         attacht_id = self.env['ir.attachment'].search(
             [('res_model', '=', self._name), ('res_id', '=', self.id), ('name', '=', _name_file)], limit=1)
         if not attacht_id:
@@ -278,21 +279,26 @@ class AccountMove1(models.Model):
     def zip_edi_document(self, param):
         return gzip.compress(param)
 
+
     def generate_zip(self):
         success = False
-        while not success:
-            #try:        
-                #raise UserError('Hola')
+        tries = 3
+        error = None
+        while tries>0 and not success:
+            try:        
                 params_src = self.generate_xml().datas
                 params_src = base64.b64decode(params_src)
                 _logger.info(f"SRC para GZIP {params_src}")
-                #raise UserError(f"SRC para GZIP {params_src}")
                 self.write({'zip_edi_str': self.zip_edi_document(params_src)})
                 success = True
                 _logger.info('GZIP creado')
-            #except:
-            #    success = False
-            #    _logger.info('Error al generar GZIP')
+            except Exception as e:
+                success = False
+                tries -= 1
+                error = e
+                _logger.info(f'Error al Generar GZIP: {e}')
+        if (tries<=0 or not success) and error:
+            raise UserError(f'ERROR AL GENERAR ARCHIVO ZIP: {error}')
 
     def soap_service(self, METHOD = None, SERVICE_TYPE = None, MODALITY_TYPE = None):
         PARAMS = [

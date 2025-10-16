@@ -10,7 +10,7 @@ patch(PosStore.prototype, {
         this.identification_types = loadedData['l10n.bo.type.document.identity'];    
         this.pos_config = loadedData['pos.config'];    
         this.pos_payment_ref = loadedData['pos.payment'];
-         
+        this.cancellation_reason_list = loadedData["l10n.bo.cancellation.reason"];
         //this.ui_res_partner = loadedData['res.partner'];    
         
         

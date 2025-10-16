@@ -34,6 +34,26 @@ class PosConfig(models.Model):
         comodel_name='l10n.bo.pos',
         copy=False
     )
+
+    @api.onchange('branch_office_id')
+    def _onchange_branch_office_id(self):
+        self.pos_id = False 
+    
+    emision_id = fields.Many2one(
+        string='Emision',
+        comodel_name='l10n.bo.type.emision',
+        related='pos_id.emision_id',
+        readonly=True,
+        store=True
+    )
+
+    emision_code = fields.Integer(
+        string='Codigo de emisión',
+        related='emision_id.codigoClasificador',
+        readonly=True,
+        store=True
+    )
+    
     
     
     document_type_id = fields.Many2one(
@@ -81,4 +101,14 @@ class PosConfig(models.Model):
     def _compute_adm_edi(self):
         for record in self:
             record.adm_edi = record.is_enbale_user()    
-    
+
+    def action_l010n_bo_online(self):
+        if self.pos_id:
+            self.pos_id.action_online()
+
+
+    def action_l010n_bo_offline(self):
+        if self.pos_id:
+            self.pos_id.action_offline()
+
+            

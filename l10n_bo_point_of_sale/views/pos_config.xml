@@ -11,13 +11,25 @@
                         <setting string="Ajustes (BO)" help="Habilitar punto de venta fiscal" invisible="not adm_edi">
                                 <field name="enable_bo_edi"/>
                                 <div class="content-group pos_iot_config" invisible="not enable_bo_edi">
-                                    <div class="row iot_barcode_scanner" invisible="branch_office_id">
+                                    <div class="row iot_barcode_scanner">
                                         <label string="Sucursal" for="branch_office_id" class="col-lg-4 o_light_label"/>
                                         <field name="branch_office_id" options="{ 'no_open': True, 'no_create': True}" required="enable_bo_edi" />
                                     </div>
                                     <div class="row" invisible="not branch_office_id">
                                         <label string="Punto de venta" for="pos_id" class="col-lg-4 o_light_label"/>
                                         <field name="pos_id" options="{ 'no_open': True, 'no_create': True}" domain="[('branch_office_id', '=', branch_office_id)]" required="branch_office_id" />
+                                        
+                                        <field name="emision_code" invisible='1' />
+                                        <div class="o_td_label">
+                                            <label for="emision_id" string="Emision"/>
+                                        </div>
+                                        <div class="d-flex">
+                                            <field name="emision_id" />
+                                            <button name="action_l010n_bo_online" type="object" string='en Linea' icon="fa-signal" invisible='emision_code == 1' />
+                                            <button name="action_l010n_bo_offline" type="object" string='fuera de Linea' icon="fa-signal" invisible='emision_code == 2' />
+
+                                        </div>
+                                        
                                     </div>
                                     <div class="row" invisible="not pos_id">
                                         <label string="Tipo documento" for="document_type_id" class="col-lg-4 o_light_label"/>

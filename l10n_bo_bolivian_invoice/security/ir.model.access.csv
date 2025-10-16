@@ -39,3 +39,4 @@ access_l10n_bo_package,access_l10n_bo_package,model_l10n_bo_package,,1,1,1,1
 access_l10n_bo_package_line,access_l10n_bo_package_line,model_l10n_bo_package_line,,1,1,1,1
 access_l10n_bo_package_invoice_line,access_l10n_bo_package_invoice_line,model_l10n_bo_package_invoice_line,,1,1,1,1
 access_l10n_bo_cafc,access_l10n_bo_cafc,model_l10n_bo_cafc,,1,1,1,1
+access_wizard_cancellation_invoice,access_wizard_cancellation_invoice,model_wizard_cancellation_invoice,,1,1,1,1
