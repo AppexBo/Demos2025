@@ -6,7 +6,7 @@
     'author': "Luis Fernando Hinojosa Flores",
     'category': 'Sales/CRM',
     'version': '0.2',
-    'depends': ['base','web'],
+    'depends': ['base','web','project','mail'],
     'data' : [
         'views/res_users.xml'
     ],

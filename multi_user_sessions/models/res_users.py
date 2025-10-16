@@ -33,7 +33,8 @@ class ResUsers(models.Model):
     #     default='n/a',
     #     copy=False
     # )
-
+    # mu_api_key = fields.Char(string="API Key", copy=False)
+    # mu_api_key_expiration = fields.Datetime(string="Expira el", copy=False)
     
     mu_password = fields.Char(
         string='Contraseña (MU)',

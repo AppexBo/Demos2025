@@ -1,29 +1,33 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
     <data noupdate="0">
-        
         <!-- Form view for "model" -->
         <record id="view_multi_user_session_form" model="ir.ui.view">
             <field name="name">Ajuste multi usuarios por session</field>
             <field name="model">res.users</field>
             <field name="inherit_id" ref="base.view_users_form" />
             <field name="arch" type="xml">
-                
                 <xpath expr="//page[@name='preferences']/group/group[last()]" position="before">
                     <group name='multi_user_group' string="Ajustes Multi Usuario">
                         <field name="mu_password" />
                         <!-- <field name="reference_user" readonly='active' invisible='active' />
                         <field name="muip" invisible='not reference_user or active'/>                        
                         <field name="last_muip_transient" widget="CopyClipboardChar" invisible='reference_user or not active' />                         -->
-                    
                     </group>
-
                 </xpath>
-                
             </field>
         </record>
-        
-        
-
+        <record id="action_res_users_inherit_domain" model="ir.actions.act_window">
+            <field name="name">Usuarios</field>
+            <field name="res_model">res.users</field>
+            <field name="domain">[('id','not in',[1,3,4,5]),('active','in',[False,True])]</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_ids" eval="[(5, 0, 0),
+        (0, 0, {'view_mode': 'tree', 'view_id': ref('base.view_users_tree')}),
+        (0, 0, {'view_mode': 'form', 'view_id': ref('base.view_users_form')})]"/>
+        </record>
+        <record id="base.menu_action_res_users" model="ir.ui.menu">
+            <field name="action" ref="multi_user_sessions.action_res_users_inherit_domain"/>
+        </record>
     </data>
 </odoo>
