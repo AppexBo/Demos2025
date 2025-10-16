@@ -45,7 +45,7 @@
                         type="object" 
                         name="line_discount_wizard"
                         icon="fa-percent"    
-                        invisible="parent_state not in ['draft'] or move_type not in ['out_invoice','out_refund']"
+                        invisible="parent_state not in ['draft'] or move_type not in ['out_invoice','out_refund','in_invoice','in_refund']"
                     />
                 </xpath>
             </field>

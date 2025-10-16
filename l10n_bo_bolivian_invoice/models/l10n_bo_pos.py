@@ -629,3 +629,15 @@ class L10nBoPos(models.Model):
         
     )
     
+    def action_wizard_cancellation_invoice(self):
+        return {
+            'name': 'Anulaciones manuales',
+            'type': 'ir.actions.act_window',
+            'res_model': 'wizard.cancellation.invoice',
+            'view_mode': 'form',
+            'target': 'new',
+            'context': {
+                'default_pos_id': self.id,
+                'default_branch_office_id': self.branch_office_id.id,
+            }
+        }

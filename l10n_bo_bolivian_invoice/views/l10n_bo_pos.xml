@@ -37,6 +37,8 @@
                         string="Cufd"
                 />
 
+                <button name="action_wizard_cancellation_invoice" type="object" string="Anulaciones manuales" icon="fa-play-circle"  />
+
                 <field name="messagesList" optional="show" widget="many2many_tags"/>
                 
             </tree>
@@ -60,6 +62,7 @@
                     <button name="generateSequence" type="object" string="CREAR SECUENCIA" icon="fa-play-circle" invisible="not cufd_active" />
                     <button name="action_offline" type="object" string="Fuera de línea" icon="fa-play-circle" invisible="emision_code ==2 or not emision_code"  />
                     <button name="action_online" type="object" string="En línea" icon="fa-play-circle" invisible="emision_code ==1 or not emision_code"  />
+                    <button name="action_wizard_cancellation_invoice" type="object" string="Anulaciones manuales" icon="fa-play-circle"  />
 
                     
                 </header>

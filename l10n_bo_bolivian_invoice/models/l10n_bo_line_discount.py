@@ -3,6 +3,8 @@
 from odoo import api, models, fields
 from odoo.exceptions import UserError
 from odoo.tools.float_utils import float_is_zero
+import logging
+_logger = logging.getLogger(__name__)
 
 
 class LineDiscount(models.TransientModel):
@@ -55,12 +57,22 @@ class LineDiscount(models.TransientModel):
         if self.name:
             if self.type == 'amount':
                 if self.amount < (self.name.quantity * self.name.getPriceUnit() ):
-                    self.name.write({'proportional_discount' : self.amount / self.name.quantity, 'amount_discount' : self.amount, 'fixed_amount_total_discount': self.amount, 'discount' : 0})
+                    self.name.write({
+                        'proportional_discount' : self.amount / self.name.quantity, 
+                        'amount_discount' : self.amount, 
+                        'fixed_amount_total_discount': self.amount, 
+                        'discount' : ( self.amount / (self.name.quantity * self.name.getPriceUnit() ) ) * 100
+                    })
                 else:
                     raise UserError('El descuento no puede superar el subtotal')
             else:
                 if self.percentage < 100:
-                    self.name.write({'proportional_discount' : 0, 'amount_discount' : 0, 'discount' : self.percentage, 'fixed_amount_total_discount': self.amount})
+                    self.name.write({
+                        'proportional_discount' : 0, 
+                        'amount_discount' : self.amount, 
+                        'discount' : self.percentage, 
+                        'fixed_amount_total_discount': self.amount
+                    })
                 else:
                     raise UserError('El descuento no puede ser mayor o igual al 100%')
             #self.name._amount_discount()
@@ -101,6 +113,13 @@ class AccountMoveLineBase(models.Model):
         readonly=True
     )
 
+
+    @api.onchange('quantity', 'price_unit')
+    def _onchange_subtotal(self):
+        for record in self:
+            if record.quantity or record.price_unit: 
+                record.amount_discount = 0
+                record.discount=0
     
 
     
@@ -141,14 +160,14 @@ class AccountMoveLineBase(models.Model):
     
 
     
-    #@api.onchange('discount')
-    #@api.constrains('discount')
-    # def _discount(self):
-    #     for record in self:
-    #         if not record.fixed_discount and record.move_id and record.move_id.create_date:
-    #             record.write({'percent_discount' : record.discount > 0})
-    #             record.write({'amount_discount' : ((record.quantity * record.price_unit) * (record.discount/100) ) if record.discount>0 else 0})
-
+    @api.onchange('discount')
+    @api.constrains('discount')
+    def _discount(self):
+        for record in self:
+            if not record.fixed_discount and record.move_id and record.move_id.create_date:
+                record.write({'percent_discount' : record.discount > 0})
+                record.write({'amount_discount' : ((record.quantity * record.price_unit) * (record.discount/100) ) if record.discount>0 else 0})
+                record.write({'fixed_amount_total_discount' : ((record.quantity * record.price_unit) * (record.discount/100) ) if record.discount>0 else 0})
         
     def line_discount_wizard(self):
         if self.display_type == 'product' and not self.product_id.gif_product:
@@ -247,9 +266,9 @@ class AccountMove(models.Model):
     _inherit = ['account.move']
     
 
-    def getAmountLineDiscount(sefl):
+    def getAmountLineDiscount(self):
         amount = 0
-        for line in sefl.invoice_line_ids:
+        for line in self.invoice_line_ids:
             if not line.product_id.global_discount:
                 amount += line.getAmountDiscount()
         return amount

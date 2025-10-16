@@ -8,7 +8,7 @@ import { registry } from "@web/core/registry";
 patch(PartnerDetailsEdit.prototype, {
     setup() {
         super.setup(...arguments);
-        this.intFields.push("identification_type_id", "complement", "nit_state");
+        this.intFields.push("identification_type_id", "nit_state");
         this.changes.identification_type_id = this.props.partner.identification_type_id && this.props.partner.identification_type_id[0];
         this.changes.complement = this.props.partner.complement;
         this.changes.nit_state = this.props.partner.nit_state;
