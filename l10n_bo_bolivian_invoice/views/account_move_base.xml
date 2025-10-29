@@ -52,7 +52,7 @@
                         invisible ="not edi_bo_invoice"
                         required="edi_bo_invoice"
                         readonly="state != 'draft'"
-                        domain="[('branch_office_id','=',branch_office_id)]"
+                        domain="[('branch_office_id','=',branch_office_id), ('emision_id','!=',False)]"
                     />
 
                     <field

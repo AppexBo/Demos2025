@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from odoo import api, models, fields
-from odoo.exceptions import UserError
+from odoo.exceptions import ValidationError
 import pytz
 from datetime import datetime, timedelta
 from num2words import num2words
@@ -34,7 +34,7 @@ class AccountMove(models.Model):
     pos_id = fields.Many2one(
         string='Punto de venta',
         comodel_name='l10n.bo.pos',
-        domain="[('branch_office_id', '=', branch_office_id)]"
+        domain="('branch_id', '=', branch_id)]"
     )
 
     # Default dinámico para sucursal
@@ -54,8 +54,23 @@ class AccountMove(models.Model):
 
     @api.onchange('branch_office_id')
     def _onchange_branch_office_id(self):
-        if self.pos_id and self.pos_id.branch_office_id != self.branch_office_id:
+        if not self.branch_office_id:
             self.pos_id = False
+            return {'domain': {'pos_id': []}}
+
+        # Buscar POS de la sucursal (ordenados por code ascendente)
+        pos_records = self.env['l10n.bo.pos'].search([
+            ('branch_office_id', '=', self.branch_office_id.id)
+        ], order='code asc')
+
+        # Filtrar los que tengan asignado emision_id
+        pos_records = pos_records.filtered(lambda p: p.emision_id)
+
+        # Asignar el primero automáticamente
+        self.pos_id = pos_records[:1].id if pos_records else False
+
+        # Limitar la lista desplegable solo a los POS válidos
+        return {'domain': {'pos_id': [('id', 'in', pos_records.ids)]}}
 
     # Validación: POS debe pertenecer a la sucursal
     @api.constrains('branch_office_id', 'pos_id')
